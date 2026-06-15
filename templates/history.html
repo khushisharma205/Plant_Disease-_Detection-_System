@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-header">
+  <h2>📜 Prediction History</h2>
+  <p>All your previous plant disease detections</p>
+</section>
+
+<section id="historySection">
+  <div class="loading-state">Loading history...</div>
+</section>
+
+<script>
+async function loadHistory() {
+  const section = document.getElementById('historySection');
+  try {
+    const res  = await fetch('/api/history');
+    const data = await res.json();
+
+    if (!data.length) {
+      section.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">🌿</div>
+          <h3>No predictions yet</h3>
+          <p>Upload a plant image to get started</p>
+        </div>`;
+      return;
+    }
+
+    const rows = data.map((item, index) => {
+      const status = item.is_healthy
+        ? '<span class="tag tag-healthy">✅ Healthy</span>'
+        : '<span class="tag tag-diseased">⚠️ Diseased</span>';
+
+      const mode = item.mode === 'trained'
+        ? '<span class="tag tag-trained">trained</span>'
+        : '<span class="tag tag-demo">demo</span>';
+
+      const time = item.timestamp
+        ? item.timestamp.slice(0, 16).replace('T', ' ')
+        : '-';
+
+      const plantConf   = Math.round(item.plant_confidence);
+      const diseaseConf = Math.round(item.disease_confidence);
+
+      return `
+        <tr id="row-${item.id}">
+          <td>${index + 1}</td>
+          <td><img class="thumb" src="/static/uploads/${item.image_path}" alt="plant" width="40" height="40" loading="lazy"></td>
+          <td title="${item.plant}">${item.plant}</td>
+          <td title="${item.disease}">${item.disease}</td>
+          <td>
+            <div class="conf-bar"><div class="conf-bar-fill" style="width:${plantConf}%"></div></div>
+            <span style="font-size:0.8rem;font-weight:600;">${plantConf}%</span>
+          </td>
+          <td>
+            <div class="conf-bar"><div class="conf-bar-fill" style="width:${diseaseConf}%"></div></div>
+            <span style="font-size:0.8rem;font-weight:600;">${diseaseConf}%</span>
+          </td>
+          <td>${status}</td>
+          <td>${mode}</td>
+          <td style="font-size:0.78rem;">${time}</td>
+          <td class="action-cell">
+            <button class="delete-btn" onclick="deleteItem(${item.id}, this)">
+              🗑️ Delete
+            </button>
+          </td>
+        </tr>`;
+    }).join('');
+
+    section.innerHTML = `
+      <div class="history-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Image</th>
+              <th>Plant</th>
+              <th>Disease</th>
+              <th>Plant Conf</th>
+              <th>Disease Conf</th>
+              <th>Status</th>
+              <th>Mode</th>
+              <th>Time</th>
+              <th class="action-head">Action</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>`;
+
+  } catch (e) {
+    section.innerHTML = '<div class="loading-state">Failed to load history.</div>';
+  }
+}
+
+async function deleteItem(id, btn) {
+  if (!confirm('Delete this record?')) return;
+  btn.disabled    = true;
+  btn.textContent = '⏳...';
+  try {
+    const res = await fetch(`/api/history/${id}`, { method: 'DELETE' });
+    if (res.ok) {
+      const row = document.getElementById(`row-${id}`);
+      row.style.transition = 'opacity 0.3s';
+      row.style.opacity    = '0';
+      setTimeout(() => row.remove(), 300);
+    } else {
+      alert('Delete failed!');
+      btn.disabled    = false;
+      btn.textContent = '🗑️ Delete';
+    }
+  } catch (e) {
+    alert('Network error!');
+    btn.disabled    = false;
+    btn.textContent = '🗑️ Delete';
+  }
+}
+
+loadHistory();
+</script>
+{% endblock %}
