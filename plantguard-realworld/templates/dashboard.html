@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-header">
+  <h2>📊 Dashboard</h2>
+  <p>Statistics and overview of all predictions made</p>
+</section>
+
+<div class="stats-grid">
+  <div class="stat-card total">
+    <div class="stat-icon">🔍</div>
+    <div class="stat-num" id="statTotal">—</div>
+    <div class="stat-label">Total Predictions</div>
+  </div>
+  <div class="stat-card healthy">
+    <div class="stat-icon">✅</div>
+    <div class="stat-num" id="statHealthy">—</div>
+    <div class="stat-label">Healthy Plants</div>
+  </div>
+  <div class="stat-card diseased">
+    <div class="stat-icon">⚠️</div>
+    <div class="stat-num" id="statDiseased">—</div>
+    <div class="stat-label">Diseased Plants</div>
+  </div>
+</div>
+
+<div class="dash-grid">
+  <div class="dash-card">
+    <h4>🌱 Plants Analyzed</h4>
+    <div id="plantBars"><p class="loading-state">Loading...</p></div>
+  </div>
+  <div class="dash-card">
+    <h4>🦠 Top Diseases Found</h4>
+    <div id="diseaseBars"><p class="loading-state">Loading...</p></div>
+  </div>
+</div>
+
+<!-- Model Accuracy Section -->
+<div class="dash-card" style="margin-top: 1.5rem;">
+  <h4>🎯 Trained Model Accuracy</h4>
+  <div class="info-grid" style="margin-top: 1rem;">
+
+    <div class="info-item">
+      <span>🌿 Plant Classifier</span>
+      <div style="display:flex; align-items:center; gap:10px; margin-top:6px;">
+        <div class="acc-bar-wrap">
+          <div class="acc-bar-fill" style="width: 98%;background:#22c55e;"></div>
+        </div>
+        <b style="color:#22c55e;">98%</b>
+      </div>
+    </div>
+
+    <div class="info-item">
+      <span>🍅 Tomato Disease Model</span>
+      <div style="display:flex; align-items:center; gap:10px; margin-top:6px;">
+        <div class="acc-bar-wrap">
+          <div class="acc-bar-fill" style="width: 93%;background:#3b82f6;"></div>
+        </div>
+        <b style="color:#3b82f6;">93%</b>
+      </div>
+    </div>
+
+    <div class="info-item">
+      <span>🥔 Potato Disease Model</span>
+      <div style="display:flex; align-items:center; gap:10px; margin-top:6px;">
+        <div class="acc-bar-wrap">
+          <div class="acc-bar-fill" style="width: 95%;background:#3b82f6;"></div>
+        </div>
+        <b style="color:#3b82f6;">95%</b>
+      </div>
+    </div>
+
+    <div class="info-item">
+      <span>🫑 Bell Pepper Disease Model</span>
+      <div style="display:flex; align-items:center; gap:10px; margin-top:6px;">
+        <div class="acc-bar-wrap">
+          <div class="acc-bar-fill" style="width: 96%;background:#3b82f6;"></div>
+        </div>
+        <b style="color:#3b82f6;">96%</b>
+      </div>
+    </div>
+
+  </div>
+  <p style="color:#888; font-size:0.8rem; margin-top:1rem;">
+    * Validation set accuracy from training. Update these values from 
+    <code>reports/</code> folder after training.
+  </p>
+</div>
+
+<div class="dash-card" style="margin-top:1.5rem;">
+  <h4>ℹ️ Project Information</h4>
+  <div class="info-grid">
+    <div class="info-item"><span>Plants Covered</span><b>Tomato, Potato, Bell Pepper</b></div>
+    <div class="info-item"><span>Total Classes</span><b>8 (5 diseases + 3 healthy)</b></div>
+    <div class="info-item"><span>ML Architecture</span><b>Hierarchical CNN (Plant → Disease)</b></div>
+    <div class="info-item"><span>Base Model</span><b>MobileNetV2 (Transfer Learning)</b></div>
+    <div class="info-item"><span>Dataset</span><b>PlantVillage (Kaggle)</b></div>
+    <div class="info-item"><span>Framework</span><b>Flask + TensorFlow 2.16</b></div>
+    <div class="info-item"><span>Database</span><b>SQLite</b></div>
+    <div class="info-item"><span>Image Size</span><b>224 × 224 px</b></div>
+  </div>
+</div>
+
+<style>
+  .acc-bar-wrap {
+    flex: 1;
+    background: #e5e7eb;
+    border-radius: 999px;
+    height: 10px;
+    overflow: hidden;
+  }
+  .acc-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 1s ease;
+  }
+</style>
+{% endblock %}

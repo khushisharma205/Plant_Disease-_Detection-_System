@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-eyebrow">
+      <span>🤖</span> AI Powered Detection
+    </div>
+    <h1 class="hero-title">
+      Detect Plant<br>
+      <span class="accent">Diseases Detection</span>
+    </h1>
+    <p class="hero-desc">
+      Upload a leaf photo and our AI identifies the plant and detects diseases in seconds.
+      Covers Tomato, Potato &amp; Bell Pepper with hierarchical deep learning.
+    </p>
+  </div>
+  <div class="hero-plants">
+    <div class="plant-pill">
+      <span class="pill-icon">🍅</span>
+      <div class="pill-info">
+        <span class="pill-name">Tomato</span>
+        <span class="pill-sub">Early Blight · Late Blight</span>
+      </div>
+    </div>
+    <div class="plant-pill">
+      <span class="pill-icon">🥔</span>
+      <div class="pill-info">
+        <span class="pill-name">Potato</span>
+        <span class="pill-sub">Early Blight · Late Blight</span>
+      </div>
+    </div>
+    <div class="plant-pill">
+      <span class="pill-icon">🫑</span>
+      <div class="pill-info">
+        <span class="pill-name">Bell Pepper</span>
+        <span class="pill-sub">Bacterial Spot</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="upload-section">
+  <div class="upload-box" id="uploadBox">
+    <div class="upload-inner" id="uploadInner">
+      <div class="upload-icon-wrap">📷</div>
+      <h3>Drop your leaf image here</h3>
+      <p>or click to browse files</p>
+      <span class="upload-formats">PNG · JPG · JPEG · WEBP</span>
+    </div>
+    <div class="preview-area" id="previewArea" style="display:none">
+      <img id="previewImg" src="" alt="Preview">
+      <button class="btn-remove" id="removeBtn">✕ Remove</button>
+    </div>
+    <input type="file" id="fileInput" accept=".png,.jpg,.jpeg,.webp" hidden>
+  </div>
+  <button class="btn-detect" id="detectBtn" disabled>
+    <span id="btnText">🔍 Analyze Leaf</span>
+    <span id="btnLoader" style="display:none">⏳ Analyzing...</span>
+  </button>
+</section>
+
+<section class="result-section" id="resultSection" style="display:none">
+  <div class="result-card">
+    <div class="result-header" id="resultHeader">
+      <div class="res-status-text" id="resStatusText"></div>
+      <span class="mode-badge" id="resModeBadge"></span>
+    </div>
+
+    <div class="result-grid">
+      <div class="result-item">
+        <label>🌱 Plant Detected</label>
+        <value id="resPlant">—</value>
+      </div>
+      <div class="result-item">
+        <label>Plant Confidence</label>
+        <value id="resPlantConf">—</value>
+      </div>
+      <div class="result-item">
+        <label>🦠 Disease</label>
+        <value id="resDisease">—</value>
+      </div>
+      <div class="result-item">
+        <label>Disease Confidence</label>
+        <value id="resDiseaseConf">—</value>
+      </div>
+      <div class="result-item">
+        <label>📐 Resolution</label>
+        <value id="resResolution">—</value>
+      </div>
+      <div class="result-item">
+        <label>📁 File Size</label>
+        <value id="resFileSize">—</value>
+      </div>
+    </div>
+
+    <div class="res-desc" id="resDesc"></div>
+
+    <div class="res-block">
+      <h4>🔬 Symptoms &amp; Features</h4>
+      <ul class="sym-list" id="symList"></ul>
+    </div>
+
+    <div class="res-block">
+      <h4>🛡️ Prevention &amp; Treatment</h4>
+      <p class="prev-text" id="prevText"></p>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
