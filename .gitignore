@@ -1,0 +1,11 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+instance/*.db
+static/uploads/*
+!static/uploads/.gitkeep
+models/*.keras
+reports/*.json
+reports/*.csv
