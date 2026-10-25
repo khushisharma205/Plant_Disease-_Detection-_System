@@ -1,6 +1,9 @@
+how to run the project :-
+first up all you folow this step to run this project
 RUNNING PROCESS:----
 cd D:\plantguard-realworld\plantguard-realworld
-python app.pycd
+python app.py
+
 
 # PlantGuard AI - Real World Project Version
 
